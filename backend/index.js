@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const words = ["apple", "brave", "crane", "drive", "eagle"];
-const secretWord = words[Math.floor(Math.random() * words.length)];
+let secretWord = words[Math.floor(Math.random() * words.length)];
 
 app.post('/ellisdonwordle/guess', (req, res) => {
     const { letter, position } = req.body;
