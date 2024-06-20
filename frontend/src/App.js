@@ -24,7 +24,8 @@ const App = () => {
             if (/^[a-z]$/.test(letter)) {
                 try {
                     // Make server request to guess the key press
-                    const response = await axios.post(`/guess`, {
+                    const url = API_URL ? `${API_URL}/guess` : '/guess';
+                    const response = await axios.post(url, {
                         letter,
                         position: currentCol
                     });
