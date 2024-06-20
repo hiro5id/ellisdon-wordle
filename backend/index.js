@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
+
 
 const app = express();
 const port = 3001;
@@ -20,6 +22,14 @@ app.post('/guess', (req, res) => {
     } else {
         res.json({ status: "absent" });
     }
+});
+
+// Serve static files from the react app
+app.use(express.static(path.join(__dirname, 'public')));
+
+// catchall handler for any request that doersn't match an API route, send back React's index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 app.listen(port, () => {

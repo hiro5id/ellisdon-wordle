@@ -1,4 +1,9 @@
-# Notes
+# Interesting things not note
+
+- The words to be guessed are generated on the back end, and the business logic for the guessing is also on the back end, preventing the ability for clients to cheat by looking at the javascript browser client code.
+- The possible words to guess for this demo purposes is hard coded in the back end as follows `"apple", "brave", "crane", "drive", "eagle"`
+
+# Docker
 
 
 ## To build dockerfile
