@@ -26,10 +26,14 @@ app.post('/guess', (req, res) => {
 
 // Serve static files from the react app
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/ellisdonwordle', express.static(path.join(__dirname, 'public')));
 
 // catchall handler for any request that doersn't match an API route, send back React's index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/public/index.html'));
+});
+app.get('/ellisdonwordle/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(port, () => {
