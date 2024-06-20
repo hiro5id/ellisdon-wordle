@@ -10,6 +10,7 @@ const App = () => {
     const [currentCol, setCurrentCol] = useState(0);
     const [gameFinished, setGameFinished] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [winMessage, setWinMessage] = useState('');
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -39,14 +40,20 @@ const App = () => {
                         // We are not past the end of the current row so just iterate the column by one
                         setCurrentCol(currentCol + 1);
                     } else {
-                        // we are in a new row so lets iterate the row by one
-                        setCurrentRow(currentRow + 1);
-                        // we need to reset the current column back to zero if we are in a new row
-                        setCurrentCol(0);
-                        // Check fo game finished condition
-                        if (currentRow === 4) {
-                          setGameFinished(true);
-                        }
+                        // Check if user guessed right
+                        if (newGrid[currentRow].every(cell => cell.status === 'correct')) {
+                            setWinMessage('You win, reload page to start again');
+                            setGameFinished(true);
+                        } else {
+                            // we are in a new row so lets iterate the row by one
+                            setCurrentRow(currentRow + 1);
+                            // we need to reset the current column back to zero if we are in a new row
+                            setCurrentCol(0);
+                            // Check fo game finished condition
+                            if (currentRow === 4) {
+                                setGameFinished(true);
+                            }
+                        }                       
                     }
                 } catch (error) {
                     setErrorMessage(`Error calling guess API: ${error}`)
@@ -84,7 +91,8 @@ const App = () => {
                     </div>
                 ))}
             </div>
-            {gameFinished && <div className="message">Game Finished, reload page to start again</div>}
+            {winMessage && <div className="message">{winMessage}</div>}
+            {gameFinished && !winMessage && <div className="message">Game Finished, reload page to start again</div>}
             {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
     );
