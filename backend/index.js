@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
 
 
 const app = express();
@@ -12,25 +11,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const words = ["apple", "brave", "crane", "drive", "eagle"];
-const userWords = {};
-
-// Endpoint to get a new secret word
-app.get('/ellisdonwordle/new-word', (req, res) => {
-    const userId = uuidv4();
-    const secretWord = words[Math.floor(Math.random() * words.length)];
-    userWords[userId] = secretWord;
-    res.json({ userId, message: 'New secret word chosen' });
-});
-
+let secretWord = words[Math.floor(Math.random() * words.length)];
 
 app.post('/ellisdonwordle/guess', (req, res) => {
-    const { userId, letter, position } = req.body;
-    const secretWord = userWords[userId];
-
-    if (!secretWord) {
-        return res.status(400).json({ error: 'Invalid user ID' });
-    }
-
+    const { letter, position } = req.body;
     if (secretWord[position] === letter) {
         res.json({ status: "correct" });
     } else if (secretWord.includes(letter)) {
@@ -38,6 +22,12 @@ app.post('/ellisdonwordle/guess', (req, res) => {
     } else {
         res.json({ status: "absent" });
     }
+});
+
+// Endpoint to get a new secret word
+app.get('/ellisdonwordle/new-word', (req, res) => {
+    secretWord = words[Math.floor(Math.random() * words.length)];
+    res.json({ message: 'New secret word chosen' });
 });
 
 // Serve static files from the react app

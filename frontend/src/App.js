@@ -11,7 +11,6 @@ const App = () => {
     const [gameFinished, setGameFinished] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [winMessage, setWinMessage] = useState('');
-    const [userId, setUserId] = useState(null);
 
     const API_URL = process.env.REACT_APP_API_URL;
     
@@ -19,8 +18,7 @@ const App = () => {
         const fetchNewWord = async () => {
             try {
                 const url = API_URL ? `${API_URL}/ellisdonwordle/new-word` : '/ellisdonwordle/new-word';
-                const response = await axios.get(url);
-                setUserId(response.data.userId);
+                await axios.get(url);
             } catch (error) {
                 console.error('Error fetching new word:', error);
             }
@@ -41,7 +39,6 @@ const App = () => {
                     // Make server request to guess the key press
                     const url = API_URL ? `${API_URL}/ellisdonwordle/guess` : '/ellisdonwordle/guess';
                     const response = await axios.post(url, {
-                        userId,
                         letter,
                         position: currentCol
                     });
@@ -72,7 +69,6 @@ const App = () => {
                             }
                         }                       
                     }
-                    setErrorMessage(''); // Clear error message if request is successful
                 } catch (error) {
                     setErrorMessage(`Error calling guess API: ${error}`)
                 }
