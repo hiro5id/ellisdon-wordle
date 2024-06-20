@@ -13,6 +13,19 @@ const App = () => {
     const [winMessage, setWinMessage] = useState('');
 
     const API_URL = process.env.REACT_APP_API_URL;
+    
+    React.useEffect(() => {
+        const fetchNewWord = async () => {
+            try {
+                const url = API_URL ? `${API_URL}/ellisdonwordle/new-word` : '/ellisdonwordle/new-word';
+                await axios.get(url);
+            } catch (error) {
+                console.error('Error fetching new word:', error);
+            }
+        };
+
+        fetchNewWord();
+    }, [API_URL]);
 
     const handleKeyPress = async (event) => {
         // Only proceed if we have not guessed all 5 columns in all 5 rows

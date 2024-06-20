@@ -24,6 +24,12 @@ app.post('/ellisdonwordle/guess', (req, res) => {
     }
 });
 
+// Endpoint to get a new secret word
+app.get('/ellisdonwordle/new-word', (req, res) => {
+    secretWord = words[Math.floor(Math.random() * words.length)];
+    res.json({ message: 'New secret word chosen' });
+});
+
 // Serve static files from the react app
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/ellisdonwordle', express.static(path.join(__dirname, 'public')));
