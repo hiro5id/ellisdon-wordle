@@ -20,12 +20,13 @@ app.get('/ellisdonwordle/new-word', (req, res) => {
     const secretWord = words[Math.floor(Math.random() * words.length)];
     userWords[userId] = secretWord;
     res.json({ userId, message: 'New secret word chosen' });
+    console.log(`current words: ${JSON.stringify(userWords,null,2)}`)
 });
 
 
 app.post('/ellisdonwordle/guess', (req, res) => {
-    const { userId, letter, position } = req.body;
-    const secretWord = userWords[userId];
+    const { myUserId, letter, position } = req.body;
+    const secretWord = userWords[myUserId];
 
     if (!secretWord) {
         return res.status(400).json({ error: 'Invalid user ID' });

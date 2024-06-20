@@ -11,23 +11,10 @@ const App = () => {
     const [gameFinished, setGameFinished] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [winMessage, setWinMessage] = useState('');
-    const [userId, setUserId] = useState(null);
+    const [myUserId, setMyUserId] = useState(null);
 
     const API_URL = process.env.REACT_APP_API_URL;
     
-    React.useEffect(() => {
-        const fetchNewWord = async () => {
-            try {
-                const url = API_URL ? `${API_URL}/ellisdonwordle/new-word` : '/ellisdonwordle/new-word';
-                const response = await axios.get(url);
-                setUserId(response.data.userId);
-            } catch (error) {
-                console.error('Error fetching new word:', error);
-            }
-        };
-
-        fetchNewWord();
-    }, [API_URL]);
 
     const handleKeyPress = async (event) => {
         // Only proceed if we have not guessed all 5 columns in all 5 rows
@@ -41,7 +28,7 @@ const App = () => {
                     // Make server request to guess the key press
                     const url = API_URL ? `${API_URL}/ellisdonwordle/guess` : '/ellisdonwordle/guess';
                     const response = await axios.post(url, {
-                        userId,
+                        myUserId,
                         letter,
                         position: currentCol
                     });
@@ -80,6 +67,20 @@ const App = () => {
         }
     };
 
+    React.useEffect(() => {
+        const fetchNewWord = async () => {
+            try {
+                const url = API_URL ? `${API_URL}/ellisdonwordle/new-word` : '/ellisdonwordle/new-word';
+                const response = await axios.get(url);
+                setMyUserId(response.data.userId);
+            } catch (error) {
+                console.error('Error fetching new word:', error);
+            }
+        };
+
+        fetchNewWord();
+    }, [API_URL]);
+
     // Use react's effect hook to run our custom function to register handleKeyPress for every keyboard press.
     // This registration will happen after every render or when dependencies change
     // To avoid memory leaks we will also remove the event listener as a cleanup function
@@ -88,7 +89,7 @@ const App = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
         };
-    }, [currentRow, currentCol, gameFinished]);
+    }, [currentRow, currentCol, gameFinished, myUserId]);
 
     // Render the 5x5 grid by iterating over each row and column from the "grid" react state we set up earlier
     // We will use "getColor" helper function to set the background color based on the state value in "grid" array
