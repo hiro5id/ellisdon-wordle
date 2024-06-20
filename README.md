@@ -18,3 +18,9 @@ docker run -p 3001:3001 wordle-game
 ```
 
 The static react files are served directly from the Node.js backend.
+
+## To override root host URL
+Set following environment variable
+```
+REACT_APP_API_URL=http://localhost:3001
+```
