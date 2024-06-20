@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 const words = ["apple", "brave", "crane", "drive", "eagle"];
 const secretWord = words[Math.floor(Math.random() * words.length)];
 
-app.post('/guess', (req, res) => {
+app.post('/ellisdonwordle/guess', (req, res) => {
     const { letter, position } = req.body;
     if (secretWord[position] === letter) {
         res.json({ status: "correct" });
