@@ -106,7 +106,7 @@ const App = () => {
                 ))}
             </div>
             {winMessage && <div className="message">{winMessage}</div>}
-            {gameFinished && !winMessage && <div className="message">Game Finished, reload page to start again</div>}
+            {gameFinished && !winMessage && <div className="message">You did not guess the word, reload page to start again with a new word</div>}
             {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
     );
